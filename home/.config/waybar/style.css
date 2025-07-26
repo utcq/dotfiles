@@ -1,0 +1,240 @@
+/* Gruvbox colors */
+@define-color black       #282828;
+@define-color red         #cc241d;
+@define-color green       #98971a;
+@define-color yellow      #d79921;
+@define-color blue        #458588;
+@define-color purple      #b16286;
+@define-color aqua        #689d6a;
+@define-color gray        #a89984;
+@define-color brgray      #928374;
+@define-color brred       #fb4934;
+@define-color brgreen     #b8bb26;
+@define-color bryellow    #fabd2f;
+@define-color brblue      #83a598;
+@define-color brpurple    #d3869b;
+@define-color braqua      #8ec07c;
+@define-color white       #ebdbb2;
+@define-color bg2         #504945;
+
+@define-color foreground  #ebdbb2;
+@define-color background  rgba(40, 40, 40, 0.8); /* dark semi-transparent */
+
+@define-color workspace_background        @background;
+@define-color workspace_button            @foreground;
+@define-color workspace_active            @black;
+@define-color workspace_active_background @green;
+@define-color workspace_urgent            @white;
+@define-color workspace_urgent_background @red;
+@define-color workspace_hover             @black;
+@define-color workspace_hover_background  @purple;
+
+@define-color critical   @red;
+@define-color warning    @yellow;
+
+/* Keyframe for blinking warnings */
+@keyframes blink {
+    to {
+        background-color: @white;
+        color: @black;
+    }
+}
+
+/* Global styles */
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "Tamzen", monospace;
+    font-weight: bold;
+    font-size: 15px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: transparent;
+    color: @foreground;
+}
+
+/* Workspaces styling */
+#workspaces {
+    background: transparent;
+    opacity: 1;
+    transition: none;
+    padding: 1px 1px;
+    border-radius: 5px;
+}
+
+#workspaces button, #workspaces button.persistent {
+    background: transparent;
+    color: @workspace_button;
+    transition: none;
+}
+
+#workspaces button.active {
+    background: @workspace_active_background;
+    color: @workspace_active;
+    border-radius: 5px;
+}
+
+#workspaces button.urgent {
+    background: @workspace_urgent_background;
+    color: @workspace_urgent;
+    border-radius: 5px;
+}
+
+#workspaces button:hover {
+    background: @workspace_hover_background;
+    color: @workspace_hover;
+    border-radius: 5px;
+}
+
+/* Taskbar */
+#taskbar {
+    background: @background;
+    border-radius: 5px;
+    margin: 5px 10px 5px 50px;
+}
+
+/* Tooltip */
+tooltip {
+    background: @background;
+    opacity: 0.95;
+    border-radius: 10px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: @purple;
+}
+
+tooltip label {
+    color: @gray;
+}
+
+/* Module styles */
+#custom-rofi,
+#custom-lock_screen,
+#custom-power,
+#custom-weather,
+#custom-khorshididate,
+#cpu,
+#disk,
+#custom-updates,
+#memory,
+#clock,
+#battery,
+#pulseaudio,
+#network,
+#tray,
+#temperature,
+#backlight,
+#language {
+    background: @background;
+    opacity: 1;
+    padding: 0px 5px;
+    margin: 2px 0px 2px 0px;
+}
+
+/* Critical and warning highlights */
+#disk.critical,
+#temperature.critical {
+    background-color: @critical;
+}
+
+#disk.warning,
+#temperature.warning {
+    background-color: @warning;
+}
+
+/* Battery */
+#battery {
+    color: @green;
+    border-radius: 5px 0 0 5px;
+}
+
+#battery.discharging {
+    color: @foreground;
+}
+
+#battery.warning:not(.charging) {
+    background: @warning;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#battery.critical:not(.charging) {
+    background-color: @critical;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+/* Custom Rofi button */
+#custom-rofi {
+    color: @blue;
+    border-radius: 5px 0 0 5px;
+}
+
+/* Custom Power button */
+#custom-power {
+    color: @red;
+    border-radius: 0 5px 5px 0;
+}
+
+/* Clock */
+#clock {
+    border-radius: 0 5px 5px 0;
+}
+
+/* Tray */
+#tray {
+    background: @background;
+    border-radius: 5px;
+    margin: 5px 50px 5px 10px;
+}
+
+
+#bluetooth {
+    background: @background;
+    color: @aqua;
+    padding: 0px 5px;
+    margin: 2px 0px;
+    border-radius: 5px;
+}
+
+
+#custom-separator {
+    color: @brgray;
+    padding: 0px 5px;
+    margin: 2px 5px;
+}
+
+
+#custom-emoji {
+    background: @background;
+    color: @bryellow;
+    padding: 0px 5px;
+    margin: 2px 0px;
+}
+
+
+#mpd,
+#custom-media {
+    background: @background;
+    color: @purple;
+    padding: 0px 5px;
+    margin: 2px 0px;
+    border-radius: 5px;
+}
+
+
+#custom-notifications {
+    background: @background;
+    color: @yellow;
+    padding: 0px 5px;
+    margin: 2px 0px;
+    border-radius: 5px;
+}

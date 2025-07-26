@@ -1,0 +1,39 @@
+format = '''
+$directory$git_branch$rust$python
+$character'''
+
+palette = 'colors'
+
+[palettes.colors]
+mustard = '#d79921'   # warm gold (used in Gruvbox yellow)
+color1 = '#458588'    # teal blue (directory bg)
+color2 = '#83a598'    # muted blue-gray (directory fg)
+color3 = '#ebdbb2'    # warm cream (text fg)
+color4 = '#282828'    # dark background
+color5 = '#b16286'    # muted purple (git branch fg)
+color6 = '#3c3836'    # darker gray/brown
+color7 = '#3c3836'    # same as color6, fallback
+color8 = '#458588'    # teal bright (git/time block bg)
+color9 = '#fe8019'    # bright orange (success symbol)
+
+# Prompt symbols 
+[character]
+success_symbol = "[🞈](color9 bold)"   # bright orange star
+error_symbol = "[🞈](red bold)"
+vicmd_symbol = "[🞈](mustard)"
+
+[directory]
+format = "[](fg:color1 bg:color4)[󰉋](bg:color1 fg:color2)[ ](fg:color1 bg:color4)[$path ](fg:color3 bg:color4)[ ](fg:color4)"
+
+[git_branch]
+format = "[](fg:color8 bg:color4)[ ](bg:color8 fg:color5)[](fg:color8 bg:color4)[(bg:color8 fg:color5) $branch](fg:color3 bg:color4)[](fg:color4) "
+
+[time]
+format = "[](fg:color8 bg:color4)[ ](bg:color8 fg:color5)[](fg:color8 bg:color4)[(bg:color8 fg:color5) $time](fg:color3 bg:color4)[](fg:color4) "
+disabled = false
+time_format = "%R"
+
+[python]
+format = "[](fg:color8 bg:color4)[${symbol}${version}](bg:color8 fg:color5)[](fg:color8 bg:color4)[(bg:color8 fg:color5)( ${virtualenv})](fg:color3 bg:color4)[](fg:color4) "
+symbol = '🐍'
+pyenv_prefix = 'venv'

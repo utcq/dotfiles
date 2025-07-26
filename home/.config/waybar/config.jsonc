@@ -1,0 +1,204 @@
+ // TIP: to get all install instructions for this config use
+ // grep -E "^// " $HOME/.config/waybar/config.jsonc
+ //
+ // To install all packages by once:
+ // sudo pacman -Syu --needed $(grep -Po '(?<=^\/\/ Install ).*' config | grep -v AUR)
+ // or with AUR packages
+ // paru -Syu --needed $(grep -Po '(?<=^\/\/ Install ).*' config | sed 's|(AUR)||g')
+
+[
+ {
+// Install otf-font-awesome ttf-font-logos(AUR)
+    //"layer": "top", // Waybar at top layer
+    "position": "top", // Waybar position (top|bottom|left|right)
+    "height": 25, // Waybar height (to be removed for auto height)
+    // "width": 1280, // Waybar width
+    "spacing": 0, // Gaps between modules (4px)
+    // Choose the order of the modules
+    "modules-left":   ["niri/workspaces", "custom/weather", "mpris"],
+    "modules-center": ["clock"],
+    "modules-right":  ["group/hardware", "custom/vpn"],
+    // Modules configuration
+    "niri/workspaces": {
+        "format": "{icon}",
+        "format-icons": {
+            "active": "<big></big>",
+            "default": "<small></small>"
+        }
+    },
+// Install curl jq gnome-weather
+    "custom/weather": {
+        "format": "{}",
+        // "format-alt": "{alt}: {}",
+        // "format-alt-click": "click-right",
+        "interval": 1800,
+        "min-length": 40,
+        "align": 0.8,
+        "return-type": "json",
+        "exec": "$HOME/.config/waybar/modules/weather.sh",
+        "exec-if": "sleep 20 && ping -4 ifconfig.co -c1",
+        "on-click": "gnome-weather",
+        "on-click-middle": "$HOME/.config/waybar/modules/weather.sh reload && pkill -SIGRTMIN+12 waybar",
+        "signal": 12
+    },
+  "mpris": {
+        //"interval": 5,
+        "dynamic-order": ["artist", "title"],
+        "dynamic-len": 97,
+        "format": "{player_icon} {dynamic}",
+        "tooltip-format": "{album}",
+        "format-paused": "{status_icon} <i>{dynamic}</i>",
+        "player-icons": {
+            "default": " "
+        },
+        "status-icons": {
+            "paused": " "
+        },
+    // "ignored-players": ["firefox"]
+    },
+    "clock": {
+        "format": "{:%a %d %b %H:%M}",
+        "format-alt": "Week {:%V of the %Y}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode"          : "month",
+            "mode-mon-col"  : 3,
+            "weeks-pos"     : "left",
+            "on-scroll"     : 1,
+            "on-click-right": "mode",
+            "format": {
+                "months":     "<span color='#ffead3'><b>{}</b></span>",
+                "days":       "<span color='#ecc6d9'><b>{}</b></span>",
+                "weeks":      "<span color='#99ffdd'><b>W{}</b></span>",
+                "weekdays":   "<span color='#ffcc66'><b>{}</b></span>",
+                "today":      "<span color='#ff6699'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions":  {
+            "on-click-right": "mode",
+            "on-click-forward": "tz_up",
+            "on-click-backward": "tz_down",
+            "on-click-middle": "shift_reset",
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        }
+    },
+    "group/hardware": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 500,
+            "transition-left-to-right": false
+        },
+        "modules": [
+            "load",
+            "power-profiles-daemon",
+            "memory",
+            "temperature",
+            "battery",
+            "bluetooth",
+            "network",
+            "custom/logout"
+        ]
+    },
+    "load": {
+        "format": "{load1} ",
+        "on-click": "kgx -e htop"
+    },
+// Install power-profiles-daemon
+    "power-profiles-daemon": {
+        "format": " {icon} ",
+        "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+        "tooltip": true,
+        "format-icons": {
+            "default": "",
+            "performance": "",
+            "balanced": "",
+            "power-saver": ""
+        }
+    },
+    "memory": {
+        "format": "",
+        "format-alt": "{used} Gb ",
+        "tooltip-format": "{percentage}%"
+    },
+    "temperature": {
+        // "thermal-zone": 2,
+        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+        "critical-threshold": 80,
+        "format-critical": "  {temperatureC}°C {icon}",
+        "format": "{icon}",
+        "format-alt": "{temperatureC}°C {icon}",
+        "format-icons": ["", "", ""],
+        "tooltip": false
+    },
+// Install brightnessctl libnotify
+    "battery": {
+        "states": {
+            // "good": 95,
+            "warning": 20,
+            "critical": 5
+        },
+        "tooltip-format": "Charge: {capacity}%\nHealth: {health}%",
+        "format": "{icon}",
+        "format-charging": "",
+        "format-plugged": "",
+        "format-alt": "{time} {icon}",
+        "on-scroll-up": "brightnessctl -c backlight set +1; notify-send -c system ' Brightness: '$(brightnessctl -m | cut -d',' -f4) ",
+        "on-scroll-down": "brightnessctl -c backlight set 1-; notify-send -c system ' Brightness: '$(brightnessctl -m | cut -d',' -f4) ",
+        // "format-good": "", // An empty format will hide the module
+        // "format-full": "",
+        "format-icons": ["", "", "", "", ""]
+    },
+    // "backlight": {
+    //     "device": "acpi_video1",
+    //     "tooltip-format": "Backlight: {percent}%",
+    //     "format": "{icon}",
+    //     "format-alt": "{percent}% {icon}",
+    //     "on-scroll-up": "brightnessctl -c backlight set +1",
+    //     "on-scroll-down": "brightnessctl -c backlight set 1-",
+    //     "format-icons": ["", "", "", "", "", "", "", "", ""]
+    // },
+// Install blueman pulseaudio-bluetooth
+// and https://wiki.archlinux.org/title/Bluetooth#Enabling_experimental_features
+    "bluetooth": {
+        "format": "  ",
+        "format-alt": "  ",
+        "format-connected": " {device_alias}  ",
+        "format-connected-battery": " {device_alias} {device_battery_percentage}%  ",
+        // "format-device-preference": [ "device1", "device2" ], // preference list deciding the displayed device
+        "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
+        "on-click-right": "blueman-manager"
+    },
+// Install iwd fuzzel polkit
+    "network": {
+        // "interface": "wlp2*", // (Optional) To force the use of this interface
+        "format-wifi": "",
+        "format-ethernet": "",
+        "tooltip-format-wifi": "  {essid}\nIP: {ipaddr}\nStrength: {signalStrength}%\nFreq: {frequency}MHz",
+        "tooltip-format-ethernet": " {ifname}\nIP: {ipaddr}",
+        "format-linked": "{ifname} (No IP) ",
+        "format-disconnected": "Disconnected ⚠",
+        "format-alt": "{ifname}: {ipaddr}/{cidr}",
+        "on-click-right": "$HOME/.config/waybar/modules/wifiselector.sh",
+        "on-click-middle": "pkexec $HOME/.config/waybar/modules/vpn.sh wg0; pkill -SIGRTMIN+4 waybar"
+    },
+// Install wireguard-tools openresolv
+// Put your client wireguard config to '/etc/wireguard/wg0.conf'
+    "custom/vpn": {
+        "format": " ",
+        "exec": "echo '{\"class\": \"connected\", \"tooltip\": \"VPN is ON\"}'",
+        "exec-if": "test -d /proc/sys/net/ipv4/conf/wg0",
+        "return-type": "json",
+        "on-click": "pkexec $HOME/.config/waybar/modules/vpn.sh wg0; pkill -SIGRTMIN+4 waybar",
+        "signal": 4
+    },
+    "custom/logout": {
+        "format": "⏻",
+        "tooltip": false,
+        "on-click": "niri msg action quit"
+    }
+},
+]
